@@ -44,7 +44,7 @@ endfunction
 
 function! s:select_projects(bang)
   return fzf#run(fzf#wrap('projects',{
-   \ 'source':  s:project_cmd,
+   \ 'source':  s:list_projects,
    \ 'dir':     g:fzf_proj#project_dir,
    \ 'sink*':   function('s:go_to'),
    \ 'options': '+m --prompt="Projects → " --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
