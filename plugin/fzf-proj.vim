@@ -48,7 +48,7 @@ function! s:select_projects(bang)
    \ 'source':  s:list_projects,
    \ 'dir':     g:fzf_proj#project_dir,
    \ 'sink*':   function('s:go_to'),
-   \ 'options': '+m --prompt="Projects' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
+   \ 'options': '+m --prompt="projects' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
 endfunction
 
 function! s:git_files(cmd, bang)
@@ -56,7 +56,7 @@ function! s:git_files(cmd, bang)
    \ 'source':  a:cmd,
    \ 'dir':     getcwd(-1, 0),
    \ 'sink*':   function('s:open'),
-   \ 'options': '+m --prompt="Files' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
+   \ 'options': '+m --prompt="files' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
 endfunction
 
 command! -bar -bang Grep            call s:pre_grep(0, <bang>0)
