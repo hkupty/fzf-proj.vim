@@ -7,6 +7,7 @@ endfunction
 " defaults
 call s:defn("g:fzf_proj#project_dir", "$HOME/code")
 call s:defn("g:fzf_proj#max_proj_depth", 1)
+call s:defn("g:fzf_proj#project#open_new_tab", 1)
 
 let s:list_projects = "find ".g:fzf_proj#project_dir." -maxdepth ".(g:fzf_proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
 let s:git_dirty = "git status --porcelain"
@@ -34,7 +35,9 @@ endfunction
 
 function! s:go_to(args)
   let [data, fname] = a:args
-  tabnew
+  if g:fzf_proj#project#open_new_tab
+    tabnew
+  endif
   exec "tcd" fname
   exec "silent edit" fname
 endfunction
