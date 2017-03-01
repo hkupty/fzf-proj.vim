@@ -8,6 +8,7 @@ endfunction
 call s:defn("g:fzf_proj#project_dir", "$HOME/code")
 call s:defn("g:fzf_proj#max_proj_depth", 1)
 call s:defn("g:fzf_proj#project#open_new_tab", 1)
+call s:defn("g:fzf_proj#fancy_separator", " → ")
 
 let s:list_projects = "find ".g:fzf_proj#project_dir." -maxdepth ".(g:fzf_proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
 let s:git_dirty = "git status --porcelain"
@@ -20,7 +21,7 @@ endfunction
 " Must work on this..
 function! s:pre_grep(tests, bang)
   call inputsave()
-  let query = input("search " . (a:tests ? "all" : "code") . " → ")
+  let query = input("search " . (a:tests ? "all" : "code") . g:fzf_proj#fancy_separator)
   call inputrestore()
   call s:grep_files(query, a:tests ? "." : "src/", a:bang)
 endfunction
@@ -47,7 +48,7 @@ function! s:select_projects(bang)
    \ 'source':  s:list_projects,
    \ 'dir':     g:fzf_proj#project_dir,
    \ 'sink*':   function('s:go_to'),
-   \ 'options': '+m --prompt="Projects → " --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
+   \ 'options': '+m --prompt="Projects' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
 endfunction
 
 function! s:git_files(cmd, bang)
@@ -55,7 +56,7 @@ function! s:git_files(cmd, bang)
    \ 'source':  a:cmd,
    \ 'dir':     getcwd(-1, 0),
    \ 'sink*':   function('s:open'),
-   \ 'options': '+m --prompt="Files → " --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
+   \ 'options': '+m --prompt="Files' . g:fzf_proj#fancy_separator . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, a:bang))
 endfunction
 
 command! -bar -bang Grep            call s:pre_grep(0, <bang>0)
