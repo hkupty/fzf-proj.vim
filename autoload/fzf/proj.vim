@@ -5,7 +5,7 @@ function! fzf#proj#fuzzy_msg(msg)
     let msg = a:msg
   endif
 
-  return msg." ".g:fzf_proj#fancy_separator." "
+  return msg." ".g:fzf#proj#fancy_separator." "
 endfunction
 
 function! fzf#proj#go_to_file(args)
