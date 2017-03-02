@@ -1,4 +1,3 @@
-
 function! fzf#proj#fuzzy_msg(msg)
   if type(a:msg) == type([])
     let msg = join(a:msg, " ")

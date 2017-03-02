@@ -18,11 +18,11 @@ command! -bar -bang Projects        call fzf#proj#select_proj(<bang>0)
 command! -bar       GitDirty        call fzf#proj#git_files(s:git_dirty)
 command! -bar       GitUnsynced     call fzf#proj#git_files(s:git_unsynced)
 
-map <plug>Projects :Projects<CR>
-map <plug>TProjects :Projects!<CR>
+nnoremap <plug>Projects :Projects<CR>
+nnoremap <plug>TProjects :Projects!<CR>
 
-map <plug>Grep :Grep<CR>
-map <plug>GrepAll :Grep!<CR>
+nnoremap <plug>Grep :Grep<CR>
+nnoremap <plug>GrepAll :Grep!<CR>
 
-map <plug>GitDirty :GitDirty<CR>
-map <plug>GitUnsynced :GitUnsynced<CR>
+nnoremap <plug>GitDirty :GitDirty<CR>
+nnoremap <plug>GitUnsynced :GitUnsynced<CR>
