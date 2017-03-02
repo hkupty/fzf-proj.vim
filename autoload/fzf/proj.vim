@@ -38,10 +38,10 @@ endfunction
 function! fzf#proj#select_proj(bang)
   let GoTo = function('fzf#proj#go_to_proj', [a:bang])
   " We use the path instead of `.` so it returns an absolute path.
-  let list_projects = "find ".expand(g:fzf_proj#project_dir)." -maxdepth ".(g:fzf_proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
+  let list_projects = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".(g:fzf#proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
   return fzf#run(fzf#wrap('projects',{
    \ 'source':  list_projects,
-   \ 'dir':     g:fzf_proj#project_dir,
+   \ 'dir':     g:fzf#proj#project_dir,
    \ 'sink*':   GoTo,
    \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('projects') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
 endfunction
