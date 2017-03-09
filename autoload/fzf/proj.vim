@@ -26,7 +26,8 @@ function! fzf#proj#go_to_proj(new_tab, args)
     tabnew
   endif
 
-  exec 'tcd' fname
+  echom 'tcd '.fname
+  exec 'tcd '.fname
   exec 'silent edit' fname
 endfunction
 
