@@ -17,17 +17,12 @@ function! fzf#proj#go_to_file(args)
   exec "silent edit" fname
 endfunction
 
-function! fzf#proj#go_to_proj(new_tab, args)
+function! fzf#proj#go_to_proj(bang, args)
   " Expects a new tab modifier (which can be curried) and the result from fzf.
   let [_, fname] = a:args
-  echom join(a:args, " - ")
-
-  if a:new_tab
-    tabnew
+  if a:bang
+    exec 'tcd '.fname
   endif
-
-  echom 'tcd '.fname
-  exec 'tcd '.fname
   exec 'silent edit' fname
 endfunction
 
