@@ -33,7 +33,7 @@ function! fzf#proj#go_to_proj(bang, args)
     exec g:fzf#proj#project#open_projects[fname].' wincmd w'
   endif
   let ctx = {'fname': fname}
-  function(g:fzf#proj#project#do, ctx)()
+  call function(g:fzf#proj#project#do, ctx)()
 endfunction
 
 function! fzf#proj#grep(arg, path)
