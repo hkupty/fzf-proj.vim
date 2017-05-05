@@ -24,8 +24,8 @@ command!       GitUnsynced     call fzf#proj#git_files(s:git_unsynced)
 
 noremap <plug>Projects    :Projects<CR>
 noremap <plug>FProjects   :Projects!<CR>
-noremap <plug>TNProjects  :TabNewProjects<CR>
-noremap <plug>FTNProjects :TabNewProjects!<CR>
+noremap <plug>TNProjects  :TabnewProjects<CR>
+noremap <plug>FTNProjects :TabnewProjects!<CR>
 
 noremap <plug>Grep :Grep<CR>
 noremap <plug>AllGrep :Grep!<CR>
