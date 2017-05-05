@@ -30,8 +30,13 @@ function! fzf#proj#go_to_proj(bang, args)
     endif
     let g:fzf#proj#project#open_projects[fname] = tabpagenr()
   else
-    exec g:fzf#proj#project#open_projects[fname].'gt'
+    exec g:fzf#proj#project#open_projects[fname].'tabn'
   endif
+  for k, v in items(g:fzf#proj#project#open_projects)
+    if v == tabpagenr() && k != fname
+      unlet g:fzf#proj#project#open_projects[k]
+    endif
+  endfor
   exec 'tcd '.fname
   let ctx = {'fname': fname}
   call function(g:fzf#proj#project#do, ctx)()
