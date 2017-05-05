@@ -24,6 +24,7 @@ endfunction
 function! fzf#proj#go_to_proj(bang, args)
   " Expects a new tab modifier (which can be curried) and the result from fzf.
   let [_, fname] = a:args
+  echom get(g:fzf#proj#project#open_projects, fname, 0)." ".a:bang." ".fname
   if get(g:fzf#proj#project#open_projects, fname, 0) == 0 || a:bang
     if g:fzf#proj#project#open_new_tab
       exec 'tcd '.fname
