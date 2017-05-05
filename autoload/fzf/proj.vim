@@ -24,15 +24,13 @@ endfunction
 function! fzf#proj#go_to_proj(bang, args)
   " Expects a new tab modifier (which can be curried) and the result from fzf.
   let [_, fname] = a:args
-  echom "".get(g:fzf#proj#project#open_projects, fname, 0)." ".a:bang." ".fname
   if get(g:fzf#proj#project#open_projects, fname, 0) == 0 || a:bang
     if g:fzf#proj#project#open_new_tab
       tabnew
     endif
     let g:fzf#proj#project#open_projects[fname] = tabpagenr()
   else
-    echom "Going to ".g:fzf#proj#project#open_projects[fname]
-    exec "".g:fzf#proj#project#open_projects[fname].' wincmd w'
+    exec g:fzf#proj#project#open_projects[fname].'gt'
   endif
   exec 'tcd '.fname
   let ctx = {'fname': fname}
