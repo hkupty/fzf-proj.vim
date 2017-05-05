@@ -32,7 +32,7 @@ function! fzf#proj#go_to_proj(bang, args)
   else
     exec g:fzf#proj#project#open_projects[fname].'tabn'
   endif
-  for k, v in items(g:fzf#proj#project#open_projects)
+  for [k, v] in items(g:fzf#proj#project#open_projects)
     if v == tabpagenr() && k != fname
       unlet g:fzf#proj#project#open_projects[k]
     endif
