@@ -21,11 +21,11 @@ function! fzf#proj#go_to_file(args)
   exec "silent edit" fname
 endfunction
 
-function! fzf#proj#go_to_proj(bang, args)
+function! fzf#proj#go_to_proj(bang, tab, args)
   " Expects a new tab modifier (which can be curried) and the result from fzf.
   let [_, fname] = a:args
   if get(g:fzf#proj#project#open_projects, fname, 0) == 0 || a:bang
-    if g:fzf#proj#project#open_new_tab
+    if a:tab
       tabnew
     endif
     let g:fzf#proj#project#open_projects[fname] = tabpagenr()
@@ -47,8 +47,8 @@ function! fzf#proj#grep(arg, path)
   \                 '--glob "!.git/*" --color "always" ' .  shellescape(a:arg) . ' ' . shellescape(a:path), 0)
 endfunction
 
-function! fzf#proj#select_proj(bang)
-  let GoTo = function('fzf#proj#go_to_proj', [a:bang])
+function! fzf#proj#select_proj(bang, tab)
+  let GoTo = function('fzf#proj#go_to_proj', [a:bang, a:tab])
   " We use the path instead of `.` so it returns an absolute path.
   let list_projects = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".(g:fzf#proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
   return fzf#run(fzf#wrap('projects',{
