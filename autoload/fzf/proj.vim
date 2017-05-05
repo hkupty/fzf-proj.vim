@@ -31,7 +31,8 @@ function! fzf#proj#go_to_proj(bang, args)
     endif
     let g:fzf#proj#project#open_projects[fname] = tabpagenr()
   else
-    exec g:fzf#proj#project#open_projects[fname].' wincmd w'
+    echom "Going to ".g:fzf#proj#project#open_projects[fname]
+    exec "".g:fzf#proj#project#open_projects[fname].' wincmd w'
   endif
   exec 'tcd '.fname
   let ctx = {'fname': fname}
