@@ -7,8 +7,12 @@ endfunction
 " defaults
 call s:defn("g:fzf#proj#project_dir", "$HOME/code")
 call s:defn("g:fzf#proj#max_proj_depth", 1)
-call s:defn("g:fzf#proj#project#open_new_tab", 1)
+call s:defn("g:fzf#proj#project#open_new_tab", 0)
 call s:defn("g:fzf#proj#fancy_separator", "→")
+call s:defn("g:fzf#proj#project#do", "fzf#proj#open_file")
+
+
+let g:fzf#proj#project#open_projects = {}
 
 let s:git_dirty = "git status --porcelain"
 let s:git_unsynced = "git diff master..HEAD --name-only"

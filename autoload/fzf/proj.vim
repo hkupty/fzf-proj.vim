@@ -8,6 +8,10 @@ function! fzf#proj#fuzzy_msg(msg)
   return msg." ".g:fzf#proj#fancy_separator." "
 endfunction
 
+function! fzf#proj#open_file() dict
+  exec "silent edit" self.fname
+endfunction
+
 function! fzf#proj#go_to_file(args)
   " Expects the result from fzf. Sometimes, the output may be a git output
   let [_, fname] = a:args
@@ -20,10 +24,16 @@ endfunction
 function! fzf#proj#go_to_proj(bang, args)
   " Expects a new tab modifier (which can be curried) and the result from fzf.
   let [_, fname] = a:args
-  if a:bang
-    exec 'tcd '.fname
+  if get(g:fzf#proj#project#open_projects, fname, 0) == 0 || a:bang
+    if g:fzf#proj#project#open_new_tab
+      exec 'tcd '.fname
+    endif
+    let g:fzf#proj#project#open_projects[fname] = tabpagenr()
+  else
+    exec g:fzf#proj#project#open_projects[fname].' wincmd w'
   endif
-  exec 'silent edit' fname
+  let ctx = {'fname': fname}
+  function(g:fzf#proj#project#do, ctx)()
 endfunction
 
 function! fzf#proj#grep(arg, path)
