@@ -23,10 +23,10 @@ command!       GitDirty        call fzf#proj#git_files(s:git_dirty)
 command!       GitUnsynced     call fzf#proj#git_files(s:git_unsynced)
 
 noremap <plug>Projects :Projects<CR>
-noremap <plug>ProjectsF :Projects!<CR>
+noremap <plug>FProjects :Projects!<CR>
 
 noremap <plug>Grep :Grep<CR>
-noremap <plug>GrepAll :Grep!<CR>
+noremap <plug>AllGrep :Grep!<CR>
 
 noremap <plug>GitDirty :GitDirty<CR>
 noremap <plug>GitUnsynced :GitUnsynced<CR>
