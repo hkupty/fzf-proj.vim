@@ -1,8 +1,8 @@
 function! fzf#proj#exit_handler(id, status, evt)
-  if status == 0
+  if a:status == 0
     echo 'Success'
   else
-    echom 'Failed with status code '.status
+    echom 'Failed with status code '.a:status
   endif
 endfunction
 function! fzf#proj#fuzzy_msg(msg)
