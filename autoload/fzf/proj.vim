@@ -1,3 +1,10 @@
+function! fzf#proj#exit_handler(id, status, evt)
+  if status == 0
+    echo 'Success'
+  else
+    echom 'Failed with status code '.status
+  endif
+endfunction
 function! fzf#proj#fuzzy_msg(msg)
   if type(a:msg) == type([])
     let msg = join(a:msg, " ")
@@ -20,7 +27,9 @@ function! fzf#proj#new_dir(args)
   call inputsave()
   let new_dir = input(fzf#proj#fuzzy_msg("new dir name"))
   call inputrestore()
-  call mkdir(fname . '/' . new_dir)
+  let full_dir_path = fname . '/' . new_dir
+  call mkdir(full_dir_path)
+  call jobstart(['git', 'init', '.'], {'cwd': full_dir_path, 'on_exit': function('fzf#proj#exit_handler')})
 endfunction
 
 function! fzf#proj#go_to_file(args)
@@ -87,8 +96,9 @@ endfunction
 
 function! fzf#proj#new_project()
   let cmd = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".g:fzf#proj#max_proj_depth." -exec test '!' -e \"{}/.git*\" -a -d '{}' ';' -printf '%h\n' | sort -u"
-  return fzf#run(fzf#wrap('base_folder',{
+  return fzf#run(fzf#wrap('project',{
    \ 'source':  cmd,
-   \ 'dir':     g:fzf#proj#new_dir,
-   \ 'sink*':   GoTo,
-   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('base folder') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
+   \ 'dir':     g:fzf#proj#project_dir,
+   \ 'sink*':   function('fzf#proj#new_dir'),
+   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('root') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
+endfunction
