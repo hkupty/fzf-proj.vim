@@ -12,6 +12,17 @@ function! fzf#proj#open_file() dict
   exec "silent edit" self.fname
 endfunction
 
+function! fzf#proj#new_dir(args)
+  let [_, fname] = a:args
+  if fname =~ " "
+    let [_, fname] = split(fname, ' ')
+  endif
+  call inputsave()
+  let new_dir = input(fzf#proj#fuzzy_msg("new dir name"))
+  call inputrestore()
+  call mkdir(fname . '/' . new_dir)
+endfunction
+
 function! fzf#proj#go_to_file(args)
   " Expects the result from fzf. Sometimes, the output may be a git output
   let [_, fname] = a:args
@@ -73,3 +84,11 @@ function! fzf#proj#pre_grep(bang)
   call fzf#proj#grep(query,  ".")
 endfunction
 
+
+function! fzf#proj#new_project()
+  let cmd = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".g:fzf#proj#max_proj_depth." -exec test '!' -e \"{}/.git*\" -a -d '{}' ';' -printf '%h\n' | sort -u"
+  return fzf#run(fzf#wrap('base_folder',{
+   \ 'source':  cmd,
+   \ 'dir':     g:fzf#proj#new_dir,
+   \ 'sink*':   GoTo,
+   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('base folder') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
