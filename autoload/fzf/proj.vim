@@ -1,10 +1,12 @@
-function! fzf#proj#exit_handler(id, status, evt)
+function! fzf#proj#exit_handler(cd, id, status, evt)
   if a:status == 0
     echo 'Success'
+    tcd a:cd
   else
     echom 'Failed with status code '.a:status
   endif
 endfunction
+
 function! fzf#proj#fuzzy_msg(msg)
   if type(a:msg) == type([])
     let msg = join(a:msg, " ")
@@ -29,7 +31,7 @@ function! fzf#proj#new_dir(args)
   call inputrestore()
   let full_dir_path = fname . '/' . new_dir
   call mkdir(full_dir_path)
-  call jobstart(['git', 'init', '.'], {'cwd': full_dir_path, 'on_exit': function('fzf#proj#exit_handler')})
+  call jobstart(['git', 'init', '.'], {'cwd': full_dir_path, 'on_exit': function('fzf#proj#exit_handler', [full_dir_path])})
 endfunction
 
 function! fzf#proj#go_to_file(args)
