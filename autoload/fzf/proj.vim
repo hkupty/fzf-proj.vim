@@ -1,7 +1,7 @@
 function! fzf#proj#exit_handler(cd, id, status, evt)
   if a:status == 0
     echo 'Success'
-    tcd a:cd
+    exec "tcd ".a:cd
   else
     echom 'Failed with status code '.a:status
   endif
