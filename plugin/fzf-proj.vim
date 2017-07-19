@@ -16,13 +16,13 @@ let g:fzf#proj#project#open_projects = {}
 let s:git_dirty = "git status --porcelain"
 let s:git_unsynced = "git diff master..HEAD --name-only"
 
-command! -bang Grep            call fzf#proj#pre_grep(<bang>0)
-command! -bang Projects        call fzf#proj#select_proj(<bang>0, 0)
-command! -bang TabnewProjects  call fzf#proj#select_proj(<bang>0, 1)
-command!       NewProject      call fzf#proj#new_project()
-command!       CloneProject    call fzf#proj#clone_project()
-command!       GitDirty        call fzf#proj#git_files(s:git_dirty)
-command!       GitUnsynced     call fzf#proj#git_files(s:git_unsynced)
+command! -bang         Grep            call fzf#proj#pre_grep(<bang>0)
+command! -bang         Projects        call fzf#proj#select_proj(<bang>0, 0)
+command! -bang         TabnewProjects  call fzf#proj#select_proj(<bang>0, 1)
+command!               NewProject      call fzf#proj#new_project()
+command!      -nargs=? CloneProject    call fzf#proj#clone_project(<f-args>)
+command!               GitDirty        call fzf#proj#git_files(s:git_dirty)
+command!               GitUnsynced     call fzf#proj#git_files(s:git_unsynced)
 
 noremap <plug>NewProject  :NewProject<CR>
 noremap <plug>Projects    :Projects<CR>
