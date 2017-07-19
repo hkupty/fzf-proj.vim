@@ -34,6 +34,25 @@ function! fzf#proj#new_dir(args)
   call jobstart(['git', 'init', '.'], {'cwd': full_dir_path, 'on_exit': function('fzf#proj#exit_handler', [full_dir_path])})
 endfunction
 
+function! fzf#proj#git_clone(git_url, args)
+  let [_, fname] = a:args
+  if fname =~ " "
+    let [_, fname] = split(fname, ' ')
+  endif
+  if a:git_url ==# ''
+    call inputsave()
+    let git_url = input(fzf#proj#fuzzy_msg("new dir name"))
+    call inputrestore()
+  else:
+    let git_url = a:git_url
+  endif
+
+  let proj_name = join(split(split(git_url, '/')[1], '\.')[:-2], '.')
+  let full_dir_path = fname . '/'
+  call mkdir(full_dir_path)
+  call jobstart(['git', 'clone', git_url], {'cwd': full_dir_path, 'on_exit': function('fzf#proj#exit_handler', [full_dir_path . proj_name])})
+endfunction
+
 function! fzf#proj#go_to_file(args)
   " Expects the result from fzf. Sometimes, the output may be a git output
   let [_, fname] = a:args
@@ -102,5 +121,14 @@ function! fzf#proj#new_project()
    \ 'source':  cmd,
    \ 'dir':     g:fzf#proj#project_dir,
    \ 'sink*':   function('fzf#proj#new_dir'),
+   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('root') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
+endfunction
+
+function! fzf#proj#clone_project(git_url)
+  let cmd = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".g:fzf#proj#max_proj_depth." -exec test '!' -e \"{}/.git*\" -a -d '{}' ';' -printf '%h\n' | sort -u"
+  return fzf#run(fzf#wrap('project',{
+   \ 'source':  cmd,
+   \ 'dir':     g:fzf#proj#project_dir,
+   \ 'sink*':   function('fzf#proj#git_clone', [a:git_url]),
    \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('root') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
 endfunction
