@@ -40,19 +40,17 @@ function! fzf#proj#select_proj(bang)
   let GoTo = function('fzf#proj#go_to_proj', [a:bang])
   " We use the path instead of `.` so it returns an absolute path.
   let list_projects = "find ".expand(g:fzf#proj#project_dir)." -maxdepth ".(g:fzf#proj#max_proj_depth + 1)." -name '.git' -printf '%h\n'"
-  return fzf#run(fzf#wrap('projects',{
+  return GoTo(fzf#run(fzf#wrap('projects',{
    \ 'source':  list_projects,
    \ 'dir':     g:fzf#proj#project_dir,
-   \ 'sink*':   GoTo,
-   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('projects') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
+   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('projects') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0)))
 endfunction
 
 function! fzf#proj#git_files(cmd)
-  return fzf#run(fzf#wrap('edited',{
+  return fzf#proj#go_to_file(fzf#run(fzf#wrap('edited',{
    \ 'source':  a:cmd,
    \ 'dir':     getcwd(-1, 0),
-   \ 'sink*':   function('fzf#proj#go_to_file'),
-   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('files') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0))
+   \ 'options': '+m --prompt="' . fzf#proj#fuzzy_msg('files') . '" --header-lines=0 --expect=ctrl-e --tiebreak=index'}, 0)))
 endfunction
 
 function! fzf#proj#pre_grep(bang)
